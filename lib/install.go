@@ -314,6 +314,12 @@ func findGoodInstallDir() (string, error) {
 		candidates = append(candidates, homebin)
 	}
 
+	// also try user's $HOME/.local/bin
+	if home := os.Getenv("HOME"); home != "" && os.Getenv("USER") != "root" {
+		homelocalbin := filepath.Join(home, ".local/bin")
+		candidates = append(candidates, homelocalbin)
+	}
+	
 	// Finally /usr/bin
 	candidates = append(candidates, "/usr/bin")
 	// Test if it makes sense to install to any of those
